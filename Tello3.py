@@ -1,4 +1,3 @@
-import threading
 import socket
 import time
 
@@ -18,22 +17,8 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind(host_address)
 
 
-def recv():
-    count = 0
-    while True:
-        try:
-            data, server = sock.recvfrom(1518)
-            print(data.decode(encoding="utf-8"))
-        except Exception:
-            print('\nExit . . .\n')
-            break
-
-
 print('\r\n\r\nTello Python3 Tech Blog.\r\n')
 
-# recvThread create
-recvThread = threading.Thread(target=recv)
-recvThread.start()
 
 # 新規作成コード
 while True:
@@ -47,14 +32,11 @@ while True:
         sent = sock.sendto('land'.encode(encoding="utf-8"), tello_address)
         print('land')
         time.sleep(5)
-
         msg = 'end'
         print('end:ok')
 
-        # if not msg:
-        #     break
         if 'end' in msg:  # endが入力されたら、ソケット終了
-            print('...')
+            print('Exit...')
             sock.close()
             break
 
