@@ -1,8 +1,6 @@
 import threading
 import socket
-# import sys
 import time
-import platform
 
 
 # TelloのプライベートIPとポート番号
@@ -15,7 +13,7 @@ host_ip = '192.168.10.2'
 host_port = 8889
 host_address = (host_ip, host_port)
 
-# Create a UDP socket
+# UDP通信の確立
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind(host_address)
 
@@ -31,39 +29,36 @@ def recv():
             break
 
 
-print('\r\n\r\nTello Python3 Demo.\r\n')
-
-print('Tello: command takeoff land flip forward back left right \r\n       up down cw ccw speed speed?\r\n')
-
-print('end -- quit demo.\r\n')
-
+print('\r\n\r\nTello Python3 Tech Blog.\r\n')
 
 # recvThread create
 recvThread = threading.Thread(target=recv)
 recvThread.start()
 
+# 新規作成コード
 while True:
     try:
-        python_version = str(platform.python_version())
-        version_init_num = int(python_version.partition('.')[0])
-       # print (version_init_num)
-        if version_init_num == 3:
-            msg = input("")
-        elif version_init_num == 2:
-            msg = input("")
+        sent = sock.sendto('command'.encode(encoding="utf-8"), tello_address)
+        print('command')
+        time.sleep(5)
+        sent = sock.sendto('takeoff'.encode(encoding="utf-8"), tello_address)
+        print('takeoff')
+        time.sleep(10)
+        sent = sock.sendto('land'.encode(encoding="utf-8"), tello_address)
+        print('land')
+        time.sleep(5)
 
-        if not msg:
-            break
+        msg = 'end'
+        print('end:ok')
 
-        if 'end' in msg:
+        # if not msg:
+        #     break
+        if 'end' in msg:  # endが入力されたら、ソケット終了
             print('...')
             sock.close()
             break
 
-        # Send data
-        msg = msg.encode(encoding="utf-8")
-        sent = sock.sendto(msg, tello_address)
     except KeyboardInterrupt:
         print('\n . . .\n')
-        sock.close()
+        sock.close()  # 通信終了
         break
