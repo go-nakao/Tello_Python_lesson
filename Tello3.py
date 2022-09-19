@@ -25,9 +25,21 @@ while True:
     try:
         sent = sock.sendto('command'.encode(encoding="utf-8"), tello_address)
         print('command')
+        data, _ = sock.recvfrom(1518)  # コマンドの送信結果をdataに入れて表示させる。
+        print(data.decode(encoding="utf-8"))
+        time.sleep(1)
+        sent = sock.sendto('streamon'.encode(encoding="utf-8"),
+                           tello_address)  # Tello Video受信のためのコマンドstreamonを送信
+        print('streamon')
+        data, _ = sock.recvfrom(1518)
+        print(data.decode(encoding="utf-8"))
         time.sleep(5)
+
+        # 離陸
         sent = sock.sendto('takeoff'.encode(encoding="utf-8"), tello_address)
         print('takeoff')
+        data, _ = sock.recvfrom(1518)
+        print(data.decode(encoding="utf-8"))
         time.sleep(10)
         # 前方へ移動
         sent = sock.sendto('forward 100'.encode(
@@ -37,20 +49,38 @@ while True:
         # 右旋回
         sent = sock.sendto('cw 90'.encode(encoding="utf-8"), tello_address)
         print('cw')
+        data, _ = sock.recvfrom(1518)
+        print(data.decode(encoding="utf-8"))
         time.sleep(5)
         # 上昇
         sent = sock.sendto('up 50'.encode(encoding="utf-8"), tello_address)
         print('up')
+        data, _ = sock.recvfrom(1518)
+        print(data.decode(encoding="utf-8"))
         time.sleep(5)
         # 後退
         sent = sock.sendto('back 100'.encode(encoding="utf-8"), tello_address)
         print('back')
+        data, _ = sock.recvfrom(1518)
+        print(data.decode(encoding="utf-8"))
         time.sleep(5)
+        # 着陸
         sent = sock.sendto('land'.encode(encoding="utf-8"), tello_address)
         print('land')
+        data, _ = sock.recvfrom(1518)
+        print(data.decode(encoding="utf-8"))
         time.sleep(5)
+        # ストリーミング終了
+        sent = sock.sendto('streamoff'.encode(encoding="utf-8"), tello_address)
+        print('video end')
+        data, _ = sock.recvfrom(1518)
+        print(data.decode(encoding="utf-8"))
+        time.sleep(3)
+        # 終了
         msg = 'end'
         print('end:ok')
+        data, _ = sock.recvfrom(1518)
+        print(data.decode(encoding="utf-8"))
 
         if 'end' in msg:  # endが入力されたら、ソケット終了
             print('Exit...')
