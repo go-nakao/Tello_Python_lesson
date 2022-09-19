@@ -29,6 +29,23 @@ while True:
         sent = sock.sendto('takeoff'.encode(encoding="utf-8"), tello_address)
         print('takeoff')
         time.sleep(10)
+        # 前方へ移動
+        sent = sock.sendto('forward 100'.encode(
+            encoding="utf-8"), tello_address)
+        print('forward')
+        time.sleep(5)
+        # 右旋回
+        sent = sock.sendto('cw 90'.encode(encoding="utf-8"), tello_address)
+        print('cw')
+        time.sleep(5)
+        # 上昇
+        sent = sock.sendto('up 50'.encode(encoding="utf-8"), tello_address)
+        print('up')
+        time.sleep(5)
+        # 後退
+        sent = sock.sendto('back 100'.encode(encoding="utf-8"), tello_address)
+        print('back')
+        time.sleep(5)
         sent = sock.sendto('land'.encode(encoding="utf-8"), tello_address)
         print('land')
         time.sleep(5)
